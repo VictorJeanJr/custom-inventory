@@ -32,6 +32,7 @@ public abstract class InventoryProvider implements InventoryHolder {
         action.accept(player);
     }
 
+
     private void setContains(InventoryContains inventoryContains) {
         this.inventoryContains = inventoryContains;
     }

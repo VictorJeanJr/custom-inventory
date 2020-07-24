@@ -27,8 +27,8 @@ public class ClickableItem {
         return new ClickableItem(itemStack, consumer);
     }
 
-    public static ClickableItem empty(ItemStack itemStack) {
-        return new ClickableItem(itemStack, e -> {});
+    public static ClickableItem empty(ItemStack itemStack, boolean cancel) {
+        return new ClickableItem(itemStack, cancel ? e -> e.setCancelled(true) : e -> {});
     }
 
 
