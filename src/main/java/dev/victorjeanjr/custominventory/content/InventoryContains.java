@@ -113,7 +113,7 @@ public class InventoryContains implements Listener {
         InventoryProvider provider = (InventoryProvider)e.getInventory().getHolder();
 
         if(Objects.nonNull(provider.getContains().consumer)) provider.getContains().consumer.accept(e);
-        
+
         ItemStack itemStack = e.getCurrentItem();
 
         if(Objects.isNull(itemStack)) return;
