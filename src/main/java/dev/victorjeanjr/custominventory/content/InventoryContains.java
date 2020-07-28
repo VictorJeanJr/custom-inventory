@@ -17,20 +17,29 @@ import org.bukkit.plugin.Plugin;
 import java.util.Collection;
 import java.util.Map;
 import java.util.Objects;
+import java.util.function.Consumer;
 
 public class InventoryContains implements Listener {
 
     private Inventory inventory;
     private Map<Integer, ClickableItem> items;
 
+    private Consumer<InventoryClickEvent> consumer;
+
     private InventoryContains() {
         this.inventory = null;
         this.items = Maps.newHashMap();
+        this.consumer = null;
     }
 
     public InventoryContains(Inventory inventory) {
         this.inventory = inventory;
         this.items = Maps.newHashMap();
+        this.consumer = null;
+    }
+
+    public void previousEvent(Consumer<InventoryClickEvent> consumer) {
+        this.consumer = consumer;
     }
 
     public void fill(int slot, ClickableItem clickableItem) {
@@ -100,15 +109,17 @@ public class InventoryContains implements Listener {
         if(!(e.getWhoClicked() instanceof Player)) return;
         ///Player player = (Player)e.getWhoClicked();
 
+        if(!(e.getInventory().getHolder() instanceof InventoryProvider)) return;
+        InventoryProvider provider = (InventoryProvider)e.getInventory().getHolder();
+
+        if(Objects.nonNull(provider.getContains().consumer)) provider.getContains().consumer.accept(e);
+        
         ItemStack itemStack = e.getCurrentItem();
 
         if(Objects.isNull(itemStack)) return;
         if(itemStack.getType() == Material.AIR) return;
 
         ///Inventory inventory = e.getInventory();
-
-        if(!(e.getInventory().getHolder() instanceof InventoryProvider)) return;
-        InventoryProvider provider = (InventoryProvider)e.getInventory().getHolder();
 
         ///if(provider.isEmpty(inventory)) provider.init(player, provider.getContains());
         provider.getContains().execute(e.getSlot(), e);
