@@ -125,7 +125,7 @@ public class InventoryContains implements Listener {
         provider.getContains().execute(e.getSlot(), e);
     }
 
-    public static void init(Plugin plugin) {
+    public static void register(Plugin plugin) {
         Bukkit.getPluginManager().registerEvents(new InventoryContains(), plugin);
     }
 
